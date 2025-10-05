@@ -18,6 +18,17 @@
 /**
  * @brief The structure that contains the Information of yaw motor.Use DJI GM6020 motor.
  */
+
+DM_Motor_Info_Typedef Damiao_Pitch_Motor ={
+        .FDCANFrame = {
+                .TxIdentifier = 0x01,
+                .RxIdentifier = 0x01,
+        },
+        .lost =1,
+};
+
+
+
 DJI_Motor_Info_Typedef DJI_Yaw_Motor =
 {
 	  .Type = DJI_GM6020,
@@ -32,7 +43,7 @@ DJI_Motor_Info_Typedef DJI_Yaw_Motor =
 /**
  * @brief The structure that contains the Information of chassis motor.Use DJI M3508 motor.
  */ 
-DJI_Motor_Info_Typedef Chassis_Motor[4] = {
+DJI_Motor_Info_Typedef Chassis_Motor[5] = {
 
     [0] = {	
         .Type = DJI_M3508,
@@ -62,6 +73,12 @@ DJI_Motor_Info_Typedef Chassis_Motor[4] = {
 					  .RxIdentifier = 0x204,
 				}
     },
+    [4] = {
+        .Type = DJI_GM6020,
+        .FDCANFrame = {
+                .TxIdentifier = 0x1ff,
+                .RxIdentifier = 0x206,
+        }},
 
 };
 //------------------------------------------------------------------------------
@@ -69,7 +86,7 @@ DJI_Motor_Info_Typedef Chassis_Motor[4] = {
 /**
  * @brief The structure that contains the Information of joint motor.Use DM 8009 motor.
  */
-DM_Motor_Info_Typedef DM_8009_Motor[4]= {
+DM_Motor_Info_Typedef DM_8009_Motor[5]= {
     
 	  [0] = {
 			.Control_Mode = MIT,
@@ -125,10 +142,27 @@ DM_Motor_Info_Typedef DM_8009_Motor[4]= {
 				 .RxIdentifier = 0x14,
 			},
 		},
+        [4] = {
+                .Control_Mode = MIT,
+                .Param_Range ={
+                        .P_MAX = 3.141593f,
+                        .V_MAX = 50.f,
+                        .T_MAX = 45.f
+
+                },
+                .FDCANFrame = {
+                        .TxIdentifier = 0x01,
+                        .RxIdentifier = 0x01,
+                },
+        },
   
 
 };
+
+
+
 //------------------------------------------------------------------------------
+
 
 /**
   * @brief  ������ֵת��Ϊ�Ƕ�(�ۼ� ���float���ֵ)
@@ -348,7 +382,24 @@ void DJI_M3508_Send_Single_Current(FDCAN_TxFrame_TypeDef *FDCAN_TxFrame,DJI_Moto
 }
 
 
+void DJI_6020_Motor_CAN_TxMessage(FDCAN_TxFrame_TypeDef *FDCAN_TxFrame,DJI_Motor_Info_Typedef *DJI_Motor,int16_t Current)
+{
+    FDCAN_TxFrame->Header.Identifier = DJI_Motor -> FDCANFrame.TxIdentifier;
+//    FDCAN_TxFrame->Header.Identifier = can_id;
 
+    FDCAN_TxFrame->Data[0] = Current >> 8;
+    FDCAN_TxFrame->Data[1] = Current;
+    FDCAN_TxFrame->Data[2] = Current >> 8;
+    FDCAN_TxFrame->Data[3] = Current;
+    FDCAN_TxFrame->Data[4] = Current >> 8;
+    FDCAN_TxFrame->Data[5] = Current;
+    FDCAN_TxFrame->Data[6] = Current >> 8;
+    FDCAN_TxFrame->Data[7] = Current;
+
+
+
+    USER_FDCAN_AddMessageToTxFifoQ(FDCAN_TxFrame);
+}
 
 
 
@@ -518,6 +569,8 @@ void DM_Motor_Info_Update(uint32_t *Identifier,uint8_t *Rx_Buf,DM_Motor_Info_Typ
 
     DM_Motor->Data.Temperature_MOS   = (float)(Rx_Buf[6]);
 		DM_Motor->Data.Temperature_Rotor = (float)(Rx_Buf[7]);
+    DM_Motor->Online_cnt = 250;
+    DM_Motor->lost = 0;
 
 }
 //------------------------------------------------------------------------------	

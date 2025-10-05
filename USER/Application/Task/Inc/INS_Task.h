@@ -44,6 +44,6 @@ typedef struct
 }INS_Info_Typedef;
 
 /* Externs---------------------------------------------------------*/
-extern INS_Info_Typedef INS_Info; 
-
+extern INS_Info_Typedef INS_Info;
+extern void INS_task(void const * argument);
 #endif //INS_TASK_H

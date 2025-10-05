@@ -126,6 +126,8 @@ typedef struct _PID_TypeDef
 }PID_Info_TypeDef;
 
 
+
+
 /* Exported functions prototypes ---------------------------------------------*/
 /**
  * @brief Initializes the PID Controller.
@@ -134,8 +136,9 @@ extern void PID_Init(PID_Info_TypeDef *Pid,PID_Type_e type,float para[PID_PARAME
 /**
   * @brief  Caculate the PID Controller
   */
-extern float PID_Calculate(PID_Info_TypeDef *PID, float Target,float Measure);
 
+extern float PID_Calculate(PID_Info_TypeDef *PID, float Target,float Measure);
+extern float f_PID_Calculate(PID_Info_TypeDef *Pid, float target,float measure);
 #endif //CONTROLLER_PID_H
 
 

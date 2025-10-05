@@ -28,7 +28,8 @@
 /* USER CODE BEGIN Includes */
 #include "CAN_Task.h"
 #include "Control_Task.h"
-
+#include "INS_Task.h"
+#include "Detect_Task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -121,8 +122,8 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of Start_INS_Task */
-//  osThreadStaticDef(Start_INS_Task, INS_Task, osPriorityHigh, 0, 1024, defaultTaskBuffer, &defaultTaskControlBlock);
-//  Start_INS_TaskHandle = osThreadCreate(osThread(Start_INS_Task), NULL);
+  osThreadStaticDef(Start_INS_Task, INS_Task, osPriorityHigh, 0, 1024, defaultTaskBuffer, &defaultTaskControlBlock);
+  Start_INS_TaskHandle = osThreadCreate(osThread(Start_INS_Task), NULL);
 //
   /* definition and creation of Start_Control_Task */
   osThreadStaticDef(Start_Control_Task, Control_Task, osPriorityAboveNormal, 0, 1024, Start_Control_TaskBuffer, &Start_Control_TaskControlBlock);
@@ -133,8 +134,8 @@ void MX_FREERTOS_Init(void) {
   Start_CAN_TaskHandle = osThreadCreate(osThread(Start_CAN_Task), NULL);
 
   /* definition and creation of Start_Detect_Task */
-//  osThreadStaticDef(Start_Detect_Task, Detect_Task, osPriorityBelowNormal, 0, 1024, Start_Detect_TaskBuffer, &Start_Detect_TaskControlBlock);
-//  Start_Detect_TaskHandle = osThreadCreate(osThread(Start_Detect_Task), NULL);
+  osThreadStaticDef(Start_Detect_Task, Detect_Task, osPriorityBelowNormal, 0, 1024, Start_Detect_TaskBuffer, &Start_Detect_TaskControlBlock);
+  Start_Detect_TaskHandle = osThreadCreate(osThread(Start_Detect_Task), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -157,7 +158,8 @@ __weak void INS_Task(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-
+      INS_task(NULL);
+      osDelay(1);
   }
   /* USER CODE END INS_Task */
 }
@@ -214,7 +216,8 @@ __weak void Detect_Task(void const * argument)
   for(;;)
   {
 
-    osDelay(1);
+      Detect_task(NULL);
+      osDelay(1);
   }
   /* USER CODE END Detect_Task */
 }

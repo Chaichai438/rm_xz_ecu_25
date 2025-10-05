@@ -85,7 +85,7 @@ static void BMI088_Temp_Control(float temp);
   * @retval None
   */
 /* USER CODE END Header_INS_Task */
-void INS_Task(void const * argument)
+void INS_task(void const * argument)
 {
   /* USER CODE BEGIN INS_Task */
   TickType_t INS_Task_SysTick = 0;
@@ -162,7 +162,7 @@ static void INS_Task_Init(void)
   LowPassFilter2p_Init(&INS_AccelPF2p[2],INS_LPF2p_Alpha);
 	
   /* Initializes the Temperature Control PID  */
-	PID_Init(&TempCtrl_PID,PID_POSITION,TemCtrl_PID_Param);
+	PID_Init(&TempCtrl_PID,PID_VELOCITY,TemCtrl_PID_Param);
 	
   /* Initializes the Quaternion EKF */
 	QuaternionEKF_Init(&Quaternion_Info,10.f, 0.001f, 1000000.f,QuaternionEKF_A_Data,QuaternionEKF_P_Data);

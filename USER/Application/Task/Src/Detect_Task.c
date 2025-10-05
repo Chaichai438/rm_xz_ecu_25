@@ -30,8 +30,10 @@
 * @param argument: Not used
 * @retval None
 */
+Vision_Info_Typedef Vision_Info;
+
 /* USER CODE END Header_Detect_Task */
-void Detect_Task(void const * argument)
+void Detect_task(void const * argument)
 {
   /* USER CODE BEGIN Detect_Task */
 //  TickType_t systick = 0;

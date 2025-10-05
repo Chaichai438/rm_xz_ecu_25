@@ -22,11 +22,11 @@ float sign(float input){
 }
 
 /**
-  * @brief ³õÊ¼»¯Ò»½×µÍÍ¨ÂË²¨Æ÷.
-  * @param LPF: Ò»½×µÍÍ¨ÂË²¨Æ÷½á¹¹Ìå.
-  * @param Alpha: ÂË²¨Æ÷ÏµÊı.
-  * @param Frame_Period: ²ÉÑùÖÜÆÚ.
-  * @retval ÎŞ.
+  * @brief ï¿½ï¿½Ê¼ï¿½ï¿½Ò»ï¿½×µï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½.
+  * @param LPF: Ò»ï¿½×µï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½ï¿½.
+  * @param Alpha: ï¿½Ë²ï¿½ï¿½ï¿½Ïµï¿½ï¿½.
+  * @param Frame_Period: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+  * @retval ï¿½ï¿½.
   */
 void LowPassFilter1p_Init(LowPassFilter1p_Info_TypeDef *LPF,float Alpha)
 {
@@ -36,9 +36,9 @@ void LowPassFilter1p_Init(LowPassFilter1p_Info_TypeDef *LPF,float Alpha)
 }
 
 /**
-  * @brief ¸üĞÂÒ»½×µÍÍ¨ÂË²¨Æ÷Êı¾İ.
-  * @param Input: µ±Ç°ÊäÈë.
-  * @retval ÂË²¨ºóµÄÖµ.
+  * @brief ï¿½ï¿½ï¿½ï¿½Ò»ï¿½×µï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+  * @param Input: ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½.
+  * @retval ï¿½Ë²ï¿½ï¿½ï¿½ï¿½Öµ.
   */
 float LowPassFilter1p_Update(LowPassFilter1p_Info_TypeDef *LPF,float Input)
 {
@@ -46,23 +46,23 @@ float LowPassFilter1p_Update(LowPassFilter1p_Info_TypeDef *LPF,float Input)
 
   if(LPF->Initialized == false)
   {
-    LPF->Output = LPF->Input;//µÚÒ»´Î½øÈë¸üĞÂº¯Êı Êä³öµÈÓÚÕâ´ÎÊäÈë
+    LPF->Output = LPF->Input;//ï¿½ï¿½Ò»ï¿½Î½ï¿½ï¿½ï¿½ï¿½ï¿½Âºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     LPF->Initialized = true;
   }
 
-	/*ÂË²¨Æ÷ÏµÊı = Alhpa 0< Alhpa <1 µ±ÂË²¨ÏµÊıÔ½Ğ¡£¬ÂË²¨ÇúÏßÔ½Æ½ÎÈ£¬µ«ÊÇÖÍºóĞÔ¸ü´ó¡£
-                                   µ±ÂË²¨ÏµÊıÔ½´ó£¬ÂË²¨ÇúÏßÔ½½Ó½üÊµ¼ÊÖµ£¬ÖÍºóĞÔĞ¡£¬µ«ÊÇÂË²¨ÇúÏß¸ü¶¶ */
+	/*ï¿½Ë²ï¿½ï¿½ï¿½Ïµï¿½ï¿½ = Alhpa 0< Alhpa <1 ï¿½ï¿½ï¿½Ë²ï¿½Ïµï¿½ï¿½Ô½Ğ¡ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½Ô½Æ½ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ô¸ï¿½ï¿½ï¿½
+                                   ï¿½ï¿½ï¿½Ë²ï¿½Ïµï¿½ï¿½Ô½ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½Ó½ï¿½Êµï¿½ï¿½Öµï¿½ï¿½ï¿½Íºï¿½ï¿½ï¿½Ğ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ß¸ï¿½ï¿½ï¿½ */
 	
-	//ÂË²¨Öµ = Alhpa * ÉÏÒ»´ÎÊä³ö + £¨1 - Alhpa)*Õâ´ÎÊäÈë	
+	//ï¿½Ë²ï¿½Öµ = Alhpa * ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½1 - Alhpa)*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
   LPF->Output = LPF->Alpha * LPF->Output +(1.f - LPF->Alpha) * LPF->Input;
 	
   return LPF->Output;
 }
 
 /**
-  * @brief ³õÊ¼»¯¶ş½×µÍÍ¨ÂË²¨Æ÷.
-  * @param Alpha[3]: ÂË²¨Æ÷ÏµÊı[3].
-  * @retval ÎŞ.
+  * @brief ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½×µï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½.
+  * @param Alpha[3]: ï¿½Ë²ï¿½ï¿½ï¿½Ïµï¿½ï¿½[3].
+  * @retval ï¿½ï¿½.
   */
 void LowPassFilter2p_Init(LowPassFilter2p_Info_TypeDef *LPF,float Alpha[3])
 {
@@ -72,9 +72,9 @@ void LowPassFilter2p_Init(LowPassFilter2p_Info_TypeDef *LPF,float Alpha[3])
 }
 
 /**
-  * @brief ¸üĞÂ¶ş½×µÍÍ¨ÂË²¨Æ÷Êı¾İ.
-  * @param Input: µ±Ç°ÊäÈë.
-  * @retval ÂË²¨ºóµÄÖµ.
+  * @brief ï¿½ï¿½ï¿½Â¶ï¿½ï¿½×µï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+  * @param Input: ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½.
+  * @retval ï¿½Ë²ï¿½ï¿½ï¿½ï¿½Öµ.
   */
 float LowPassFilter2p_Update(LowPassFilter2p_Info_TypeDef *LPF,float Input)
 {
@@ -94,5 +94,75 @@ float LowPassFilter2p_Update(LowPassFilter2p_Info_TypeDef *LPF,float Input)
 
 	return LPF->Output[2];
 }
+
+
+/**
+ * è®¡ç®—ä½é€šæ»¤æ³¢å™¨çš„æƒé‡å› å­
+ * @param tau æ—¶é—´å¸¸æ•°ï¼Œå†³å®šæ»¤æ³¢å™¨çš„å“åº”é€Ÿåº¦
+ * @param dt æ—¶é—´æ­¥é•¿ï¼Œè¡¨ç¤ºæ¯æ¬¡æ›´æ–°çš„æ—¶é—´é—´éš”
+ * @return è¿”å›è®¡ç®—å‡ºçš„æƒé‡å› å­alpha
+ */
+static float compute_alpha(float tau, float dt) {
+    // å¼ºåˆ¶éæ³•å‚æ•°è¿”å›æœ€å¤§æƒé‡
+    if (tau < 0.0f || dt <= 0.0f) return 1.0f;
+    // è®¡ç®—æƒé‡å› å­ï¼Œé˜²æ­¢è¶…è¿‡ç•Œé™
+    float a = dt / (tau + dt);
+    if (a > 1.0f) a = 1.0f;
+    if (a < 0.0f) a = 0.0f;
+    return a;
+}
+
+/**
+ * åˆå§‹åŒ–ä½é€šæ»¤æ³¢å™¨
+ * @param filter æ»¤æ³¢å™¨å¯¹è±¡æŒ‡é’ˆ
+ * @param tau æ—¶é—´å¸¸æ•°
+ * @param dt æ—¶é—´æ­¥é•¿
+ * @param initial_output åˆå§‹è¾“å‡ºå€¼
+ */
+void LPF_Init(LowPassFilter* filter, float tau, float dt, float initial_output) {
+    filter->tau = tau;
+    filter->dt = dt;
+    filter->output = initial_output;
+    filter->enabled = 1;  // é»˜è®¤å¯ç”¨
+    filter->alpha = compute_alpha(tau, dt);
+}
+
+
+/**
+ * æ›´æ–°ä½é€šæ»¤æ³¢å™¨çš„è¾“å‡º
+ * @param filter æ»¤æ³¢å™¨å¯¹è±¡æŒ‡é’ˆ
+ * @param input è¾“å…¥å€¼
+ * @return è¿”å›æ›´æ–°åçš„è¾“å‡ºå€¼
+ */
+float LPF_Update(LowPassFilter* filter, float input) {
+    if (!filter->enabled) {
+        filter->output = input;
+        return input;
+    }
+
+    // é˜²æ­¢è¾“å…¥æ˜¯éæ³•å€¼
+    if (isnan(input) || isinf(input)) {
+        return filter->output;
+    }
+
+    float alpha = filter->alpha;
+
+    // é˜²æ­¢ alpha å¼‚å¸¸
+    if (alpha < 0.0f || alpha > 1.0f) {
+        alpha = 1.0f;
+    }
+
+    // æ ¸å¿ƒæ»¤æ³¢è®¡ç®—
+    filter->output = (1.0f - alpha) * filter->output + alpha * input;
+
+    // é˜²æ­¢è¾“å‡ºæº¢å‡º
+    if (isinf(filter->output) || isnan(filter->output)) {
+        filter->output = 0.0f;
+    }
+
+    return filter->output;
+}
+
 //------------------------------------------------------------------------------
+
 

@@ -48,6 +48,6 @@ extern  FDCAN_TxFrame_TypeDef   FDCAN2_TxFrame;
 extern  FDCAN_TxFrame_TypeDef   FDCAN3_TxFrame;
 extern void  USER_FDCAN_AddMessageToTxFifoQ(FDCAN_TxFrame_TypeDef *FDCAN_TxFrame);
 extern void BSP_FDCAN_Init(void);
-
+extern void FDCAN2_RxFifo1RxHandler_1(uint32_t *Identifier,uint8_t Data[8]);
 	   
 #endif

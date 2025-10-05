@@ -23,6 +23,7 @@
 #include "stm32h723xx.h"
 #include "bsp_can.h"
 
+
 /**
  * @brief typedef enum that contains the type of DJI Motor Device.
  */
@@ -66,6 +67,29 @@ typedef struct
 /**
  * @brief typedef structure that contains the data for the Motor Device.
  */
+
+
+typedef enum
+{
+    MOTOR_ERROR_NONE = 0x00U,   /*!< no error */
+    MOTOR_CAN_OFFLINE = 0x01U,    /*!< CAN transfer failed */
+    MOTOR_OVER_TEMPERATURE = 0x02U,   /*!< abnormal motor temperature */
+}Motor_Status_e;
+typedef struct
+{
+    bool Initlized;   /*!< init flag */
+    int16_t  State; 	/*!< Motor ERROR Message */
+    uint16_t  P_int;
+    uint16_t  V_int;
+    uint16_t  T_int;
+    float  Position;   /*!< Motor Positon */
+    float  Velocity;   /*!< Motor Velocity  */
+    float  Torque;  /*!< Motor Torque */
+    float  Temperature_MOS;   /*!< Motor Temperature_MOS */
+    float  Temperature_Rotor;   /*!< Motor Temperature_Rotor */
+    float  Angle;
+}Damiao_GeneralInfo_Typedef;
+
 typedef struct 
 {
   bool Initlized;   /*!< init flag */
@@ -78,6 +102,21 @@ typedef struct
 	
 }DJI_Motor_Data_Typedef;
 
+typedef struct
+{
+    uint16_t ErrorCount;    /*!< Error status judgment count */
+    Motor_Status_e Status;   /*!< Error status */
+}Motor_ErrorrHandler_Typedef;
+
+typedef struct
+{
+    bool lost;
+    uint8_t ID;   /*!< Type of Motor */
+    uint8_t Online_cnt;
+    Motor_CANFrameInfo_typedef FDCANFrame;    /*!< information for the CAN Transfer */
+    Damiao_GeneralInfo_Typedef Data;   /*!< information for the Motor Device */
+    Motor_ErrorrHandler_Typedef ERRORHandler;   /*!< information for the Motor Error */
+}Damiao_Motor_Info_Typedef;
 /**
  * @brief typedef structure that contains the param range for the DM_Motor .
  */
@@ -122,8 +161,9 @@ typedef struct
  * @brief typedef structure that contains the information for the DJI Motor Device.
  */
 typedef struct
-{
-  
+{    bool lost;
+    uint8_t Online_cnt;
+    uint8_t ID;
 	DM_Motor_Control_Mode_Type_e	Control_Mode;
   Motor_CANFrameInfo_typedef FDCANFrame;   
 	DM_Motor_Param_Range_Typedef Param_Range; 
@@ -134,6 +174,16 @@ typedef struct
 /**
  * @brief typedef structure that contains the control information for the DM Motor Device .
  */
+
+typedef enum{
+    Trigger,
+    Left_Shoot,
+    Right_Shoot,
+    Yaw,
+    Pitch,
+    DJI_MOTOR_USAGE_NUM,
+}DJI_MOTOR_USAGE_e;
+
 typedef struct
 {
   float Position;
@@ -145,9 +195,11 @@ typedef struct
 }DM_Motor_Contorl_Info_Typedef;
 
 /* Externs ------------------------------------------------------------------*/
-extern DJI_Motor_Info_Typedef DJI_Yaw_Motor,Chassis_Motor[4];
+extern DJI_Motor_Info_Typedef DJI_Yaw_Motor,Chassis_Motor[5];
 
-extern DM_Motor_Info_Typedef DM_8009_Motor[4];
+extern DM_Motor_Info_Typedef DM_8009_Motor[5],Damiao_Pitch_Motor;
+
+//extern Damiao_Motor_Info_Typedef Damiao_Pitch_Motor;
 
 extern DM_Motor_Contorl_Info_Typedef DM_Motor_Contorl_Info[4];
 
@@ -161,6 +213,7 @@ extern void DM_Motor_CAN_TxMessage(FDCAN_TxFrame_TypeDef *FDCAN_TxFrame,DM_Motor
 
 extern void DJI_M3508_Send_Single_Current(FDCAN_TxFrame_TypeDef *FDCAN_TxFrame,DJI_Motor_Info_Typedef *DJI_Motor,int16_t Current);
 
+extern void DJI_6020_Motor_CAN_TxMessage(FDCAN_TxFrame_TypeDef *FDCAN_TxFrame,DJI_Motor_Info_Typedef *DJI_Motor,int16_t Current);
 
 
 #endif //DEVICE_MOTOR_H

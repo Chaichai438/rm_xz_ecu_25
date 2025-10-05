@@ -25,47 +25,57 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /**
- * @brief  Ò»½×µÍÍ¨ÂË²¨Æ÷ĞÅÏ¢µÄ½á¹¹Ìå
+ * @brief  Ò»ï¿½×µï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ä½á¹¹ï¿½ï¿½
  */
 typedef struct
 {
-	bool Initialized;       //³õÊ¼»¯±êÖ¾ 0:Î´³õÊ¼»¯ 1£º³õÊ¼»¯
-    float Input;          //µ±Ç°ÊäÈë
-    float Output;         //Êä³ö
-    float Alpha;          //ÂË²¨ÏµÊı
+	bool Initialized;       //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ö¾ 0:Î´ï¿½ï¿½Ê¼ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+    float Input;          //ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
+    float Output;         //ï¿½ï¿½ï¿½
+    float Alpha;          //ï¿½Ë²ï¿½Ïµï¿½ï¿½
 }LowPassFilter1p_Info_TypeDef;
 
 /**
- * @brief ¶ş½×µÍÍ¨ÂË²¨Æ÷ĞÅÏ¢µÄ½á¹¹Ìå.
+ * @brief ï¿½ï¿½ï¿½×µï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ä½á¹¹ï¿½ï¿½.
  */
+typedef struct {
+    float tau;       // æ—¶é—´å¸¸æ•°ï¼ˆæ§åˆ¶å¹³æ»‘ç¨‹åº¦ï¼‰
+    float dt;        // é‡‡æ ·å‘¨æœŸï¼ˆå•ä½ï¼šç§’ï¼‰
+    float alpha;     // æ»¤æ³¢ç³»æ•°
+    float output;    // å½“å‰è¾“å‡º
+    int enabled;     // æ˜¯å¦å¯ç”¨æ»¤æ³¢ï¼š1=å¯ç”¨ï¼Œ0=ç»•è¿‡
+} LowPassFilter;
+
 
 typedef struct 
 {
-    bool Initialized;  //³õÊ¼»¯±êÖ¾ 0:Î´³õÊ¼»¯ 1£º³õÊ¼»¯
-    float Input;       //µ±Ç°ÊäÈë
-    float Output[3];   //Êä³ö ÏÖÔÚºÍ¹ıÈ¥Á½´ÎµÄÊä³ö
-    float Alpha[3];    //¶ş½×ÂË²¨Æ÷ÏµÊı
+    bool Initialized;  //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ö¾ 0:Î´ï¿½ï¿½Ê¼ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+    float Input;       //ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
+    float Output[3];   //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÚºÍ¹ï¿½È¥ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½ï¿½
+    float Alpha[3];    //ï¿½ï¿½ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½Ïµï¿½ï¿½
 
 }LowPassFilter2p_Info_TypeDef;
+
 
 /* Extern Functions Prototypes ---------------------------------------------*/
 
 /**
-  * @brief ¸ù¾İº¯ÊıÖĞÖ¸¶¨µÄ²ÎÊı³õÊ¼»¯Ò»½×µÍÍ¨ÂË²¨Æ÷.
+  * @brief ï¿½ï¿½ï¿½İºï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ò»ï¿½×µï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½.
   */
 extern void LowPassFilter1p_Init(LowPassFilter1p_Info_TypeDef *LPF,float Alpha);
 /**
-  * @brief ¸ù¾İº¯ÊıÖĞÖ¸¶¨µÄ²ÎÊı¸üĞÂ£¨¼ÆËã£©Ò»½×µÍÍ¨ÂË²¨Æ÷
+  * @brief ï¿½ï¿½ï¿½İºï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½ï¿½ï¿½ï¿½ã£©Ò»ï¿½×µï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½
   */
 extern float LowPassFilter1p_Update(LowPassFilter1p_Info_TypeDef *lpf,float input);
 /**
-  * @brief ¸ù¾İº¯ÊıÖĞÖ¸¶¨µÄ²ÎÊı³õÊ¼»¯¶ş½×µÍÍ¨ÂË²¨Æ÷
+  * @brief ï¿½ï¿½ï¿½İºï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½×µï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½
   */
 extern void  LowPassFilter2p_Init(LowPassFilter2p_Info_TypeDef *lpf,float alpha[3]);
 /**
-  * @brief ¸ù¾İº¯ÊıÖĞÖ¸¶¨µÄ²ÎÊı¸üĞÂ£¨¼ÆËã£©¶ş½×µÍÍ¨ÂË²¨Æ÷
+  * @brief ï¿½ï¿½ï¿½İºï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½ï¿½ï¿½ï¿½ã£©ï¿½ï¿½ï¿½×µï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½
   */
 extern float LowPassFilter2p_Update(LowPassFilter2p_Info_TypeDef *lpf,float input);
-
+extern float LPF_Update(LowPassFilter* filter, float input);
+extern void LPF_Init(LowPassFilter* filter, float tau, float dt, float initial_output);
 extern float sign(float input);
 #endif //LOWPASS_FILTER_H

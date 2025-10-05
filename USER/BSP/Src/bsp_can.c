@@ -18,6 +18,31 @@
 #include "Motor.h"
 #include "Remote_Control.h"
 
+
+
+
+
+//
+//
+//#define get_DJ6020_motor_measure(pre, data){(ptr)->Mechanical_angle = (uint16_t)((data)[0] << 8 | (data)[1]);															\
+//												\
+//		(ptr)->v_int = (uint16_t)((data)[2] << 8 | (data)[3]);                                                                    \
+//        (ptr)->current = (data[4] << 8) | data[5];\
+//		(ptr)->temperate = (data)[6];	}
+//
+//
+//#define get_DM4310_motor_measure(pre, data){ \
+//(ptr)->id = (data[0]) & 0x0F;															\
+//		(ptr)->p_int = (data[1] << 8) | data[2];												\
+//		(ptr)->v_int = (data[3] << 4) | (data[4] >> 4);											\
+//		(ptr)->t_int = ((data[4] & 0xF) << 8) | data[5];    \
+//        (ptr)->tor = uint_to_float((ptr)->t_int, T_MIN, T_MAX, 12); \
+//			(ptr)->pos = uint_to_float((ptr)->p_int, P_MIN, P_MAX, 16);      \
+//            (ptr)->Temp = (fp32)(rx_data[6]) - 40;														\
+// 		(ptr)->err_state = (fp32)(rx_data[7]);	\
+//        }
+
+
 /**
  * @brief The structure that contains the Information of FDCAN1 and FDCAN2 Receive.
  */
@@ -159,10 +184,13 @@ void USER_FDCAN_AddMessageToTxFifoQ(FDCAN_TxFrame_TypeDef *FDCAN_TxFrame){
 static void FDCAN1_RxFifo0RxHandler(uint32_t *Identifier,uint8_t Data[8])
 {
    
-	DJI_Motor_Info_Update(Identifier,Data,&Chassis_Motor[0]);
-  DJI_Motor_Info_Update(Identifier,Data,&Chassis_Motor[1]);
-	DJI_Motor_Info_Update(Identifier,Data,&Chassis_Motor[2]);
-	DJI_Motor_Info_Update(Identifier,Data,&Chassis_Motor[3]);
+//	DJI_Motor_Info_Update(Identifier,Data,&Chassis_Motor[0]);
+//  DJI_Motor_Info_Update(Identifier,Data,&Chassis_Motor[1]);
+//	DJI_Motor_Info_Update(Identifier,Data,&Chassis_Motor[2]);
+//	DJI_Motor_Info_Update(Identifier,Data,&Chassis_Motor[3]);
+
+    DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[4]);
+
 
 }
 
@@ -188,11 +216,13 @@ static void FDCAN3_RxFifo0RxHandler(uint32_t *Identifier,uint8_t Data[8])
   */
 static void FDCAN2_RxFifo1RxHandler(uint32_t *Identifier,uint8_t Data[8])
 {
-	
-	DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[0]);
-  DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[1]);
-	DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[2]);
-	DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[3]);
+//
+//	DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[0]);
+//  DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[1]);
+//	DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[2]);
+//	DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[3]);
+
+    DJI_Motor_Info_Update(Identifier,Data,&DJI_Yaw_Motor);
 	
 
 }
@@ -239,4 +269,18 @@ void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 	
   FDCAN2_RxFifo1RxHandler(&FDCAN_RxFIFO1Frame.Header.Identifier,FDCAN_RxFIFO1Frame.Data);
 	 
+}
+
+
+void FDCAN2_RxFifo1RxHandler_1(uint32_t *Identifier,uint8_t Data[8])
+{
+//
+//	DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[0]);
+//  DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[1]);
+//	DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[2]);
+//	DM_Motor_Info_Update(Identifier,Data,&DM_8009_Motor[3]);
+
+    DJI_Motor_Info_Update(Identifier,Data,&DJI_Yaw_Motor);
+
+
 }

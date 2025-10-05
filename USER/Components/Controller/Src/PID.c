@@ -180,5 +180,70 @@ float PID_Calculate(PID_Info_TypeDef *PID, float Target,float Measure)
 
   return PID->Output;
 }
+
+
+float f_PID_Calculate(PID_Info_TypeDef *Pid, float target,float measure)
+{
+    /* update the pid error status */
+    PID_ErrorHandle(Pid);
+    if(Pid->ERRORHandler.Status != PID_ERROR_NONE)
+    {
+        Pid->PID_Calc_Clear(Pid);
+        return 0;
+    }
+
+    /* update the target/measure */
+    Pid->Target = target;
+    Pid->Measure = measure;
+
+    /* update the error */
+    Pid->Err[2] = Pid->Err[1];
+    Pid->Err[1] = Pid->Err[0];
+    Pid->Err[0] = Pid->Target - Pid->Measure;
+
+    if(fabsf(Pid->Err[0]) >= Pid->Param.Deadband)
+    {
+        /* update the pid controller output */
+        if(Pid->Type == PID_POSITION)
+        {
+            /* Update the PID Integral */
+            if(Pid->Param.KI != 0)
+                Pid->Integral += Pid->Err[0];
+            else
+                Pid->Integral = 0;
+
+            VAL_LIMIT(Pid->Integral,-Pid->Param.LimitIntegral,Pid->Param.LimitIntegral);
+
+            /* Update the Proportional Output,Integral Output,Derivative Output */
+            Pid->Pout = Pid->Param.KP * Pid->Err[0];
+            Pid->Iout = Pid->Param.KI * Pid->Integral;
+            Pid->Dout = Pid->Param.KD * (Pid->Err[0] - Pid->Err[1]);
+
+            /* update the PID output */
+            Pid->Output = Pid->Pout + Pid->Iout + Pid->Dout;
+            VAL_LIMIT(Pid->Output,-Pid->Param.LimitOutput,Pid->Param.LimitOutput);
+        }
+        else if(Pid->Type == PID_VELOCITY)
+        {
+            /* Update the Proportional Output,Integral Output,Derivative Output */
+            Pid->Pout = Pid->Param.KP * (Pid->Err[0] - Pid->Err[1]);
+            Pid->Iout = Pid->Param.KI * (Pid->Err[0]);
+            Pid->Dout = Pid->Param.KD * (Pid->Err[0] - 2.f*Pid->Err[1] + Pid->Err[2]);
+
+            /* update the PID output */
+            Pid->Output += Pid->Pout + Pid->Iout + Pid->Dout;
+            VAL_LIMIT(Pid->Output,-Pid->Param.LimitOutput,Pid->Param.LimitOutput);
+        }
+    }
+
+    return Pid->Output;
+}
+
+
+
+
+
+
+
 //------------------------------------------------------------------------------
 
